@@ -6,8 +6,10 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Open sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: rgb(248 250 252);
+  color: #374151;
 }
 
 a {
@@ -17,14 +19,43 @@ a {
 
 * {
   box-sizing: border-box;
+  border-color: #e5e7eb;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.pokeball-flat {
+  @apply absolute h-[60px] w-[60px] rounded-full bg-white/10;
+
+  &::before,
+  &::after {
+    content: '';
+    @apply absolute left-[-50px] top-[-50px] block h-[160px] w-[160px] rounded-full border-[40px] border-white/10;
   }
-  body {
-    color: white;
-    background: black;
+  &::before {
+    clip-path: polygon(0 0, 100% 0, 100% 75px, 0% 75px);
   }
+  &::after {
+    clip-path: polygon(0 85px, 100% 85px, 100% 100%, 0% 100%);
+  }
+}
+
+:root {
+  --elm-undefined: #e5e7eb;
+  --elm-bug: #9dc130;
+  --elm-dark: #5f606d;
+  --elm-dragon: #0773c7;
+  --elm-electric: #edd53f;
+  --elm-fairy: #ef97e6;
+  --elm-fighting: #d94256;
+  --elm-fire: #fc6c6d;
+  --elm-flying: #9bb4e8;
+  --elm-ghost: #7975d4;
+  --elm-grass: #5dbe62;
+  --elm-ground: #d78555;
+  --elm-ice: #98d8d8;
+  --elm-normal: #9a9da1;
+  --elm-poison: #b563ce;
+  --elm-psychic: #f85888;
+  --elm-rock: #cec18c;
+  --elm-steel: #b8b8d0;
+  --elm-water: #60a5fa;
 }
