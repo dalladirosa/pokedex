@@ -10,6 +10,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.4",
     "@tanstack/react-query": "^4.14.5",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
@@ -22,7 +23,8 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
     "react-intersection-observer": "^9.4.0",
-    "typescript": "4.8.4"
+    "typescript": "4.8.4",
+    "use-debounce": "^8.0.4"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.2.0",

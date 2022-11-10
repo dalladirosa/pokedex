@@ -47,7 +47,7 @@ function Home() {
 
   return (
     <div>
-      <div className="sticky top-2 z-30 py-2.5 px-6">
+      <div className="sticky top-0 z-30 py-2.5 px-6">
         <Filters
           filter={filter}
           setFilter={setFilter}
@@ -61,6 +61,8 @@ function Home() {
           <PokemonCard key={`${index}-${pokemon.id}`} pokemon={pokemon} />
         ))}
         {isFetchingNextPage && <LoadingCard />}
+        <div></div>
+        <div></div>
       </div>
       <div ref={ref} />
     </div>

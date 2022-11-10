@@ -1,14 +1,13 @@
-import axios from 'axios'
 import { request } from 'graphql-request'
 
 import { QueryFunctionContext } from '@tanstack/react-query'
 
 import {
+  GetPokemon,
   GetPokemonGenAndTypes,
-  GetPokemonGenerationDetailData,
   GetPokemonsData,
   GetPokemonsKey,
-  Pokemon,
+  QueryPokemonKey,
 } from '@/interfaces/pokemon.interface'
 import { toSentenceCase } from '@/utils/string'
 
@@ -54,11 +53,6 @@ export const getAllPokemons = async (
   return res.pokemon_v2_pokemonspecies
 }
 
-export const getPokemonEncounter = async (url: string) => {
-  const { data } = await axios.get<Pokemon>(url)
-  return data
-}
-
 export const getPokemonGenAndTypes = async () => {
   const POKEMON_GENERATIONS_AND_TYPES = /* GraphQL */ `
     query PokemonsGenAndTypes {
@@ -92,8 +86,54 @@ export const getPokemonGenAndTypes = async () => {
   }
 }
 
-export const getPokemonType = async (url: string) => {
-  const { data } = await axios.get<GetPokemonGenerationDetailData>(url)
+export const getPokemon = async (
+  ctx: QueryFunctionContext<QueryPokemonKey>
+) => {
+  const POKEMON = /* GraphQL */ `
+    query Pokemon($name: String) {
+      pokemon_v2_pokemon(where: { name: { _eq: $name } }) {
+        id
+        name
+        height
+        weight
+        pokemon_v2_pokemontypes {
+          pokemon_v2_type {
+            name
+          }
+        }
+        pokemon_v2_pokemonstats {
+          stat_id
+          base_stat
+        }
+        pokemon_v2_pokemonabilities {
+          pokemon_v2_ability {
+            name
+            pokemon_v2_abilityeffecttexts(where: { language_id: { _eq: 9 } }) {
+              short_effect
+            }
+          }
+        }
+        pokemon_v2_pokemonmoves(distinct_on: move_id) {
+          pokemon_v2_move {
+            name
+            type_id
+            power
+            accuracy
+            pp
+            pokemon_v2_movedamageclass {
+              name
+            }
+          }
+        }
+      }
+    }
+  `
 
-  return data
+  const res = await request<GetPokemon>(
+    `https://beta.pokeapi.co/graphql/v1beta`,
+    POKEMON,
+    { name: ctx.queryKey[1] }
+  )
+
+  return res.pokemon_v2_pokemon
 }
