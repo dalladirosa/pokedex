@@ -7,24 +7,6 @@ import { getPokemonGenAndTypes } from '@/api/pokemons'
 import { GetPokemonFilter } from '@/interfaces/pokemon.interface'
 import { removeSlash, toSentenceCase } from '@/utils/string'
 
-const TYPE_LIST = [
-  'normal',
-  'fighting',
-  'flying',
-  'poison',
-  'ground',
-  'rock',
-  'bug',
-  'ghost',
-  'fire',
-  'water',
-  'grass',
-  'electric',
-  'psychic',
-  'ice',
-  'dragon',
-]
-
 interface FiltersProps {
   isPreviousData: boolean
   filter: GetPokemonFilter

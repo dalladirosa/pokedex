@@ -3,6 +3,7 @@ import { request } from 'graphql-request'
 import { QueryFunctionContext } from '@tanstack/react-query'
 
 import {
+  GetAllPokemonsData,
   GetPokemon,
   GetPokemonGenAndTypes,
   GetPokemonsData,
@@ -135,5 +136,21 @@ export const getPokemon = async (
     { name: ctx.queryKey[1] }
   )
 
+  return res.pokemon_v2_pokemon
+}
+
+export const getAllPokemonsNoLimit = async () => {
+  const POKEMONS = /* GraphQL */ `
+    query Pokemons {
+      pokemon_v2_pokemon {
+        id
+        name
+      }
+    }
+  `
+  const res = await request<GetAllPokemonsData>(
+    `https://beta.pokeapi.co/graphql/v1beta`,
+    POKEMONS
+  )
   return res.pokemon_v2_pokemon
 }
