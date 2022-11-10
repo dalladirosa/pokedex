@@ -20,8 +20,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const checkStatus = useCallback(async () => {
     const online = await checkOnlineStatus()
-    console.log(online)
+
     setOnlineStatus(online)
+
     if (online === onlineStatus) return
     if (!online) toast.error('You are offline', { duration: Infinity })
     else toast.dismiss()

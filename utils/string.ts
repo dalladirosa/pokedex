@@ -11,6 +11,3 @@ export const removeSlash = (str: string = '') => {
 
   return `Generation ${generationNumber.toUpperCase()}`
 }
-
-export const optmizeGQLString = (str: string) =>
-  str.replace(/(\r\n|\n|\r)/gm, '').replace(/ +(?= )/g, '')
