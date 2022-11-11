@@ -1,13 +1,19 @@
+import { GetStaticPropsResult } from 'next'
 import { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-import { useInfiniteQuery } from '@tanstack/react-query'
+import {
+  dehydrate,
+  DehydratedState,
+  QueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query'
 
 import Filters from '@/containers/home/Filters'
 import LoadingCard from '@/containers/home/LodingCard'
 import PokemonCard from '@/containers/home/PokemonCard'
 
-import { getAllPokemons, LIMIT } from '@/api/pokemons'
+import { getAllPokemons, getPokemonGenAndTypes, LIMIT } from '@/api/pokemons'
 import {
   GetPokemonFilter,
   GetPokemonsData,
@@ -15,6 +21,33 @@ import {
 } from '@/interfaces/pokemon.interface'
 
 const INITIAL_FILTER = { name: '', generationId: 0, typeId: 0 }
+type Result = GetStaticPropsResult<{ dehydratedState: DehydratedState }>
+
+export async function getStaticProps(): Promise<Result> {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+        retry: 1,
+        networkMode: 'offlineFirst',
+      },
+    },
+  })
+  await queryClient.fetchInfiniteQuery(
+    ['pokemons', INITIAL_FILTER],
+    getAllPokemons
+  )
+  await queryClient.fetchQuery(['pokemonGen&Types'], getPokemonGenAndTypes)
+
+  // https://github.com/tannerlinsley/react-query/issues/1458
+  const dehydratedState = JSON.parse(JSON.stringify(dehydrate(queryClient)))
+
+  return {
+    props: {
+      dehydratedState,
+    },
+  }
+}
 
 function Home() {
   const [filter, setFilter] = useState<GetPokemonFilter>(INITIAL_FILTER)

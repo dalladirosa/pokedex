@@ -129,6 +129,20 @@ module.exports = [
     },
   },
   {
+    urlPattern: /https:\/\/beta.pokeapi.co\/graphql\/.*/,
+    handler: 'NetworkFirst',
+    options: {
+      cacheName: 'pokemon-cache',
+      expiration: {
+        maxEntries: 10,
+        maxAgeSeconds: 300,
+      },
+      cacheableResponse: {
+        statuses: [0, 200],
+      },
+    },
+  },
+  {
     urlPattern: ({ url }) => {
       const { pathname } = url
       return pathname.startsWith('/api/pokemon')

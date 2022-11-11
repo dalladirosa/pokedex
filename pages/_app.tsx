@@ -1,13 +1,21 @@
 import type { AppProps } from 'next/app'
 import React from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
 import '@/styles/globals.css'
 
 import Layout from '@/components/Layout'
 
-export default function App({ Component, pageProps }: AppProps) {
+type Props = AppProps<{
+  dehydratedState: unknown
+}>
+
+export default function App({ Component, pageProps }: Props) {
   const [queryClient] = React.useState(
     () =>
       new QueryClient({
@@ -22,9 +30,11 @@ export default function App({ Component, pageProps }: AppProps) {
   )
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Hydrate>
     </QueryClientProvider>
   )
 }
